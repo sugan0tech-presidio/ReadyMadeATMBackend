@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadyMadeATMBackend.Context;
 
@@ -11,9 +12,11 @@ using ReadyMadeATMBackend.Context;
 namespace ReadyMadeATMBackend.Migrations
 {
     [DbContext(typeof(ReadyMadeATMContext))]
-    partial class ReadyMadeATMContextModelSnapshot : ModelSnapshot
+    [Migration("20240711094216_UpdateUser")]
+    partial class UpdateUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,44 +62,6 @@ namespace ReadyMadeATMBackend.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Transactions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Amount = 500.0,
-                            CurrentBalance = 1500.0,
-                            SenderId = 1,
-                            Timestamp = new DateTime(2024, 5, 11, 15, 16, 20, 820, DateTimeKind.Local).AddTicks(2415),
-                            Type = "Deposit"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Amount = 200.0,
-                            CurrentBalance = 1300.0,
-                            SenderId = 1,
-                            Timestamp = new DateTime(2024, 6, 11, 15, 16, 20, 820, DateTimeKind.Local).AddTicks(2439),
-                            Type = "Withdraw"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Amount = 1000.0,
-                            CurrentBalance = 3000.0,
-                            SenderId = 2,
-                            Timestamp = new DateTime(2024, 6, 11, 15, 16, 20, 820, DateTimeKind.Local).AddTicks(2468),
-                            Type = "Deposit"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Amount = 500.0,
-                            CurrentBalance = 2500.0,
-                            SenderId = 2,
-                            Timestamp = new DateTime(2024, 5, 11, 15, 16, 20, 820, DateTimeKind.Local).AddTicks(2492),
-                            Type = "Withdraw"
-                        });
                 });
 
             modelBuilder.Entity("ReadyMadeATMBackend.Models.User", b =>
@@ -130,40 +95,6 @@ namespace ReadyMadeATMBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AtmNumber = "1234567890",
-                            Balance = 1000.0,
-                            Name = "Alice",
-                            Pin = 1234
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AtmNumber = "1234567891",
-                            Balance = 2000.0,
-                            Name = "Bob",
-                            Pin = 1234
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AtmNumber = "1234567892",
-                            Balance = 3000.0,
-                            Name = "Charlie",
-                            Pin = 1234
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AtmNumber = "1234567893",
-                            Balance = 4000.0,
-                            Name = "Diana",
-                            Pin = 1234
-                        });
                 });
 
             modelBuilder.Entity("ReadyMadeATMBackend.Models.Transaction", b =>
