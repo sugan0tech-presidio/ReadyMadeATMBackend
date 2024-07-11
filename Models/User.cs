@@ -2,11 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReadyMadeATMBackend.Models;
 
-public class User: BaseEntity
+public class User : BaseEntity
 {
     [MaxLength(50)]
     public string Name { get; set; }
-    
     [MaxLength(13)]
     public string Phone { get; set; }
     public string AtmNumber { get; set; }

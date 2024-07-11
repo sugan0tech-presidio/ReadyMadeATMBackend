@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadyMadeATMBackend.Context;
 
@@ -11,9 +12,11 @@ using ReadyMadeATMBackend.Context;
 namespace ReadyMadeATMBackend.Migrations
 {
     [DbContext(typeof(ReadyMadeATMContext))]
-    partial class ReadyMadeATMContextModelSnapshot : ModelSnapshot
+    [Migration("20240711074411_Seeds")]
+    partial class Seeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +70,7 @@ namespace ReadyMadeATMBackend.Migrations
                             Amount = 500.0,
                             CurrentBalance = 1500.0,
                             SenderId = 1,
-                            Timestamp = new DateTime(2024, 5, 11, 15, 16, 20, 820, DateTimeKind.Local).AddTicks(2415),
+                            Timestamp = new DateTime(2024, 5, 11, 13, 14, 11, 67, DateTimeKind.Local).AddTicks(5917),
                             Type = "Deposit"
                         },
                         new
@@ -76,7 +79,7 @@ namespace ReadyMadeATMBackend.Migrations
                             Amount = 200.0,
                             CurrentBalance = 1300.0,
                             SenderId = 1,
-                            Timestamp = new DateTime(2024, 6, 11, 15, 16, 20, 820, DateTimeKind.Local).AddTicks(2439),
+                            Timestamp = new DateTime(2024, 6, 11, 13, 14, 11, 67, DateTimeKind.Local).AddTicks(5945),
                             Type = "Withdraw"
                         },
                         new
@@ -85,7 +88,7 @@ namespace ReadyMadeATMBackend.Migrations
                             Amount = 1000.0,
                             CurrentBalance = 3000.0,
                             SenderId = 2,
-                            Timestamp = new DateTime(2024, 6, 11, 15, 16, 20, 820, DateTimeKind.Local).AddTicks(2468),
+                            Timestamp = new DateTime(2024, 6, 11, 13, 14, 11, 67, DateTimeKind.Local).AddTicks(5974),
                             Type = "Deposit"
                         },
                         new
@@ -94,7 +97,7 @@ namespace ReadyMadeATMBackend.Migrations
                             Amount = 500.0,
                             CurrentBalance = 2500.0,
                             SenderId = 2,
-                            Timestamp = new DateTime(2024, 5, 11, 15, 16, 20, 820, DateTimeKind.Local).AddTicks(2492),
+                            Timestamp = new DateTime(2024, 5, 11, 13, 14, 11, 67, DateTimeKind.Local).AddTicks(6003),
                             Type = "Withdraw"
                         });
                 });
@@ -118,11 +121,6 @@ namespace ReadyMadeATMBackend.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
 
                     b.Property<int>("Pin")
                         .HasColumnType("int");
