@@ -60,7 +60,7 @@ public class Program
 
         builder.Services.AddDbContext<ReadyMadeATMContext>(optionsBuilder =>
             {
-                optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"));
+                optionsBuilder.UseSqlServer("Server=localhost;Database=Banking;User Id=sa;Password=Sugan@123;TrustServerCertificate=True;");
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }
         );

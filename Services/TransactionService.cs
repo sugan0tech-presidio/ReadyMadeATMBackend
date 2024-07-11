@@ -69,10 +69,11 @@ namespace ReadyMadeATMBackend.Services
                 Amount = amount,
                 Timestamp = DateTime.Now,
                 CurrentBalance = user.Balance,
-                Description = "Withdraw"
+                Description = "Withdraw",
+                SenderId = user.Id
+                
             };
-            transaction = await _transactionRepo.Add(transaction);
-            user.Transactions.Add(transaction);
+            await _transactionRepo.Add(transaction);
             await _userRepo.Update(user);
             return "Amount Successfully Withdrawn";
         }
