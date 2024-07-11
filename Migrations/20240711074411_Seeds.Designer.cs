@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadyMadeATMBackend.Context;
 
@@ -11,9 +12,11 @@ using ReadyMadeATMBackend.Context;
 namespace ReadyMadeATMBackend.Migrations
 {
     [DbContext(typeof(ReadyMadeATMContext))]
-    partial class ReadyMadeATMContextModelSnapshot : ModelSnapshot
+    [Migration("20240711074411_Seeds")]
+    partial class Seeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
