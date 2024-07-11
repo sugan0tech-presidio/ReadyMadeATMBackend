@@ -2,10 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReadyMadeATMBackend.Models;
 
-public class User
+public class User: BaseEntity
 {
-    [Key]
-    public int Id { get; set; }
     [MaxLength(50)]
     public string Name { get; set; }
     public string AtmNumber { get; set; }

@@ -1,6 +1,4 @@
 namespace ReadyMadeATMBackend.Repos;
-
-public interface IBaseRepo
+public interface IBaseRepo<T>
 {
-    
 }
