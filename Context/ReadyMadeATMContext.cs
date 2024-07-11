@@ -12,10 +12,10 @@ public class ReadyMadeATMContext(DbContextOptions<ReadyMadeATMContext> options) 
     {
         // Seeds
         modelBuilder.Entity<User>().HasData(
-            new User { Name = "Alice", AtmNumber = "1234567890", Pin = 1234, Balance = 1000 },
-            new User { Name = "Bob", AtmNumber = "1234567891", Pin = 1234, Balance = 2000 },
-            new User {  Name = "Charlie", AtmNumber = "1234567892", Pin = 1234, Balance = 3000 },
-            new User {  Name = "Diana", AtmNumber = "1234567893", Pin = 1234, Balance = 4000 }
+            new User {Id =1,  Name = "Alice", AtmNumber = "1234567890", Pin = 1234, Balance = 1000, Phone = "12345678"},
+            new User { Id = 2, Name = "Bob", AtmNumber = "1234567891", Pin = 1234, Balance = 2000 , Phone = "12346783"},
+            new User {  Id = 3, Name = "Charlie", AtmNumber = "1234567892", Pin = 1234, Balance = 3000 , Phone = "123458938"},
+            new User {  Id = 4,Name = "Diana", AtmNumber = "1234567893", Pin = 1234, Balance = 4000 , Phone = "182383833"}
         );
 
         modelBuilder.Entity<Transaction>().HasData(

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReadyMadeATMBackend.Exceptions;
@@ -8,6 +10,8 @@ namespace ReadyMadeATMBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableCors(PolicyName = "AllowAll")]
+[Authorize]
 public class TransactionsController(ITransactionService transactionService) : ControllerBase
 {
     [HttpPost("deposit")]

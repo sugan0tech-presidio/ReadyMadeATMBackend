@@ -10,7 +10,8 @@ namespace ReadyMadeATMBackend.Interfaces
 {
     public interface IUserService
     {
-        public Task<bool> UserLogin(LoginDTO loginDTO);
+        public Task<VerifyDto> UserLogin(LoginDTO loginDTO);
+        public Task<User> GetUserByAccountNumber(string atmNumber);
         public Task<User> CreateAccount(CreateAccountDTO createAccountDTO);
     }
 }

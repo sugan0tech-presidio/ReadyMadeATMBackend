@@ -6,6 +6,6 @@ using ReadyMadeATMBackend.Models.DTO;
 
 namespace ReadyMadeATMBackend.Repos;
 
-public class UserRepo(ReadyMadeATMContext context) : IUserRepo
+public class UserRepo(ReadyMadeATMContext context) : BaseRepo<User>(context)
 {
 }

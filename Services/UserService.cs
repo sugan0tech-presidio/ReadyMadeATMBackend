@@ -6,31 +6,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ReadyMadeATMBackend.Exceptions;
+using ReadyMadeATMBackend.Repos;
 
 namespace ReadyMadeATMBackend.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepo _userRepo;
+        private readonly IBaseRepo<User> _userRepo;
+        private readonly ITokenService _tokenService;
 
-        public UserService(IUserRepo userRepo)
+        public UserService(IBaseRepo<User> userRepo, ITokenService tokenService)
         {
             _userRepo = userRepo;
+            _tokenService = tokenService;
         }
 
 
         public async Task<User> CreateAccount(CreateAccountDTO createAccountDTO)
         {
-            var Duplicate = _userRepo.GetByPhone(createAccountDTO.Phone);
-            if (Duplicate.Result.Count<0)
+            var users = await _userRepo.GetAll();
+            var Duplicate = users.FindAll(user1 => user1.Phone.Equals(createAccountDTO.Phone));
+            if (Duplicate.Count < 0)
             {
                 
             }
-            foreach (var item in Duplicate.Result)
+            foreach (var item in Duplicate)
             {
                 if (item.Name == createAccountDTO.Name)
                 {
-                    throw new Exception("Name already exists");
                 }
             }
             User user = new User()
@@ -42,20 +46,30 @@ namespace ReadyMadeATMBackend.Services
                 Pin = int.Parse(Guid.NewGuid().ToString("N").Substring(0, 4))
             };
 
-            var AccountDetails =await _userRepo.AddAsync(user);
+            var AccountDetails = await _userRepo.Add(user);
             return AccountDetails;
 
         }
 
-
-        public async Task<bool> UserLogin(LoginDTO loginDTO)
+        public async Task<User> GetUserByAccountNumber(string atmNumber)
         {
-            var Login = await _userRepo.GetAsync(loginDTO);
-            if(Login == null)
+            var users = await _userRepo.GetAll();
+            var user = users.Find(user => user.AtmNumber.Equals(atmNumber));
+            if (user == null)
+                throw new EntityNotFoundException("No user found for the card");
+            return user;
+        }
+
+        public async Task<VerifyDto> UserLogin(LoginDTO loginDTO)
+        {
+            var users = await _userRepo.GetAll();
+            var login = users.Find(user => user.AtmNumber.Equals(loginDTO.AtmNumber) && user.Pin.Equals(loginDTO.Pin));
+            if(login == null)
             {
                 throw new Exception("Invalid Login");
             }
-            return true;
+            var token = _tokenService.GenerateToken(login, DateTime.Now.AddSeconds(30));
+            return new VerifyDto { Token = token, UserId = login.Id };
 
         }
     }

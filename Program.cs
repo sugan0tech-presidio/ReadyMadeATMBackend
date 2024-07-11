@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ReadyMadeATMBackend.Context;
+using ReadyMadeATMBackend.Interfaces;
 using ReadyMadeATMBackend.Models;
 using ReadyMadeATMBackend.Repos;
 using ReadyMadeATMBackend.Services;
@@ -79,6 +80,7 @@ public class Program
 
         builder.Services.AddScoped<ITransactionService, TransactionService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<IUserService, UserService>();
 
         #endregion
 
@@ -92,28 +94,22 @@ public class Program
 
         #endregion
 
-        builder.Services.AddSignalR();
-        builder.Services.AddAuthorization(option =>
-        {
-            option.AddPolicy("ChatPolicy", policy => { policy.RequireAuthenticatedUser(); });
-        });
-
         #region AuthConfig
 
-        // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //     .AddJwtBearer(options =>
-        //     {
-        //         options.TokenValidationParameters = new TokenValidationParameters
-        //         {
-        //             ValidateIssuer = false,
-        //             ValidateAudience = false,
-        //             ValidateIssuerSigningKey = true,
-        //             ValidateLifetime = true,
-        //             IssuerSigningKey =
-        //                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey:JWT"]))
-        //         };
-        //     });
-        // builder.Services.AddAuthorization();
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey("This is the dummy key which has to be a bit long for the 512. which should be even more longer for the passing"u8.ToArray())
+                };
+            });
+        builder.Services.AddAuthorization();
 
         #endregion
 
