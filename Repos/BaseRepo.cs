@@ -3,6 +3,7 @@ using ReadyMadeATMBackend.Context;
 using ReadyMadeATMBackend.Models;
 
 namespace ReadyMadeATMBackend.Repos;
+
 /// <summary>
 /// A base repository implementation for entities.
 /// Repo version 2 , Async improvement from older version.

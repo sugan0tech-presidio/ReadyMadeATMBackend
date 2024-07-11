@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ReadyMadeATMBackend.Context;
+using ReadyMadeATMBackend.Models;
+using ReadyMadeATMBackend.Repos;
+using ReadyMadeATMBackend.Services;
 
 namespace ReadyMadeATMBackend;
 
@@ -22,6 +29,30 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(option =>
         {
+            option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description =
+                    "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\""
+            });
+            option.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
+            });
         }); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -40,12 +71,16 @@ public class Program
 
         #region Repos
 
+        builder.Services.AddScoped<IBaseRepo<User>, UserRepo>();
+        builder.Services.AddScoped<IBaseRepo<Transaction>, TransactionRepo>();
 
         #endregion
 
 
         #region Services
 
+        builder.Services.AddScoped<ITransactionService, TransactionService>();
+        builder.Services.AddScoped<ITokenService, TokenService>();
 
         #endregion
 
@@ -62,11 +97,27 @@ public class Program
         builder.Services.AddSignalR();
         builder.Services.AddAuthorization(option =>
         {
-            option.AddPolicy("ChatPolicy", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-            });
+            option.AddPolicy("ChatPolicy", policy => { policy.RequireAuthenticatedUser(); });
         });
+
+        #region AuthConfig
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey:JWT"]))
+                };
+            });
+        builder.Services.AddAuthorization();
+
+        #endregion
 
         var app = builder.Build();
 

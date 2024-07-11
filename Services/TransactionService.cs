@@ -12,12 +12,14 @@ namespace ReadyMadeATMBackend.Services
     public class TransactionService : ITransactionService
     {
         private readonly UserRepo _userRepo;
-        private readonly TransactionRepo _transactionRepo;
+        private readonly IBaseRepo<Transaction> _transactionRepo;
+
         public TransactionService(UserRepo userRepo, TransactionRepo transactionRepo)
         {
             _userRepo = userRepo;
             _transactionRepo = transactionRepo;
         }
+
         public async Task<string> Deposit(int userid, double amount)
         {
             if (amount <= 0)
@@ -28,9 +30,11 @@ namespace ReadyMadeATMBackend.Services
             {
                 throw new ExceedingOneTimeLimit("You are exceeding one time limit");
             }
+
             var user = await _userRepo.GetById(userid);
             user.Balance += amount;
-            var transaction = new Transaction { Type = "Deposit",Amount = amount, Timestamp = DateTime.Now, CurrentBalance = user.Balance };
+            var transaction = new Transaction
+                { Type = "Deposit", Amount = amount, Timestamp = DateTime.Now, CurrentBalance = user.Balance };
             transaction = await _transactionRepo.Add(transaction);
             user.Transactions.Add(transaction);
             await _userRepo.Update(user);
@@ -43,12 +47,13 @@ namespace ReadyMadeATMBackend.Services
             {
                 throw new InvalidDataException("Amount must be greater than zero");
             }
+
             var user = await _userRepo.GetById(userid);
             if (user.Balance < amount)
             {
                 throw new InsufficientBalanceException("Insufficient Balance");
             }
-            else if(amount > 10000)
+            else if (amount > 10000)
             {
                 throw new ExceedingOneTimeLimit("You are exceeding one time limit");
             }

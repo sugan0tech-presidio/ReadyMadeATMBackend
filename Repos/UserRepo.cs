@@ -5,5 +5,4 @@ namespace ReadyMadeATMBackend.Repos;
 
 public class UserRepo(ReadyMadeATMContext context) : BaseRepo<User>(context)
 {
-    
 }
