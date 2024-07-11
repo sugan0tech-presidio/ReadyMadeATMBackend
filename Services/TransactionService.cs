@@ -11,10 +11,10 @@ namespace ReadyMadeATMBackend.Services
 {
     public class TransactionService : ITransactionService
     {
-        private readonly UserRepo _userRepo;
+        private readonly IBaseRepo<User> _userRepo;
         private readonly IBaseRepo<Transaction> _transactionRepo;
 
-        public TransactionService(UserRepo userRepo, TransactionRepo transactionRepo)
+        public TransactionService(IBaseRepo<User> userRepo, IBaseRepo<Transaction> transactionRepo)
         {
             _userRepo = userRepo;
             _transactionRepo = transactionRepo;
@@ -49,6 +49,10 @@ namespace ReadyMadeATMBackend.Services
             }
 
             var user = await _userRepo.GetById(userid);
+            if (user.Balance == 0)
+            {
+                throw new LoanPromotionException("Our bank also provides easy 2 mins Loan approval");
+            }
             if (user.Balance < amount)
             {
                 throw new InsufficientBalanceException("Insufficient Balance");

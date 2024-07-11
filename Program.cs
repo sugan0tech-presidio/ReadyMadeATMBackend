@@ -20,8 +20,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -102,20 +100,20 @@ public class Program
 
         #region AuthConfig
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey:JWT"]))
-                };
-            });
-        builder.Services.AddAuthorization();
+        // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //     .AddJwtBearer(options =>
+        //     {
+        //         options.TokenValidationParameters = new TokenValidationParameters
+        //         {
+        //             ValidateIssuer = false,
+        //             ValidateAudience = false,
+        //             ValidateIssuerSigningKey = true,
+        //             ValidateLifetime = true,
+        //             IssuerSigningKey =
+        //                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey:JWT"]))
+        //         };
+        //     });
+        // builder.Services.AddAuthorization();
 
         #endregion
 

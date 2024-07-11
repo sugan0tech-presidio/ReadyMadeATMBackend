@@ -58,6 +58,10 @@ public class TransactionsController(ITransactionService transactionService) : Co
         {
             return BadRequest(new ErrorModel { status = 400, message = ex.Message });
         }
+        catch (LoanPromotionException ex)
+        {
+            return BadRequest(new ErrorModel { status = 400, message = ex.Message });
+        }
         catch (Exception)
         {
             return StatusCode(500, new ErrorModel { message = "An unexpected error occurred", status = 500 });
