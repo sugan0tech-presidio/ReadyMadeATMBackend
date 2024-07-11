@@ -2,10 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReadyMadeATMBackend.Models;
 
-public class Transaction
+public class Transaction: BaseEntity
 {
-    [Key]
-    public int Id { get; set; }
     
     [AllowedValues(["Withdraw", "AccountTransfer"], ErrorMessage = "Invalid Transaction Type")]
     public string Type { get; set; }
