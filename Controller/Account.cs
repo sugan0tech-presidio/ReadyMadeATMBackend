@@ -36,7 +36,7 @@ namespace ReadyMadeATMBackend.Controller
         }
         
         [HttpGet("balance/{accountNumber}")]
-        public async Task<IActionResult> CreateAccount(string accountNumber)
+        public async Task<IActionResult> GetBalance(string accountNumber)
         {
             try
             {

@@ -34,9 +34,8 @@ namespace ReadyMadeATMBackend.Services
             var user = await _userRepo.GetById(userid);
             user.Balance += amount;
             var transaction = new Transaction
-                { Type = "Deposit", Amount = amount, Timestamp = DateTime.Now, CurrentBalance = user.Balance };
-            transaction = await _transactionRepo.Add(transaction);
-            user.Transactions.Add(transaction);
+                { Type = "Deposit", Amount = amount, Timestamp = DateTime.Now, CurrentBalance = user.Balance, SenderId = user.Id};
+            await _transactionRepo.Add(transaction);
             await _userRepo.Update(user);
             return "Amount Successfully Deposited";
         }
